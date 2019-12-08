@@ -107,4 +107,89 @@ npm install webpack webpack-cli -D
    npm i -D postcss-loader
    ```
 
+4. 打包静态资源
+
+   * ```js
+     //webpack.config.js
+     test: /\.css$/,
+     use: [
+     	'style-loader',
+     	{
+     		loader: 'css-loader',
+             options: {
+     			importLoaders: 2, //setups number of loaders applied before CSS loader
+     			modules: true //模块化css
+     			}
+     	},
+     	'sass-loader',
+     	'postcss-loader'
+     ```
+
+
+
+
+## [plugin](https://webpack.js.org/plugins/)
+
+1. html-webpack-plugin：自动生成一个`HTML`文件
+
+   ```js
+   //webpack.config.js
+   const path = require('path');
+   const HtmlWebpackPlugin = require('html-webpack-plugin');
    
+   module.exports = {
+     entry: 'index.js',
+     output: {
+       path: path.resolve(__dirname, './dist'),
+       filename: 'index_bundle.js'
+     },
+     plugins: [new HtmlWebpackPlugin({
+         template: 'src/index.html'
+     })]
+   };
+   ```
+
+   `template：'src/index.html`：打包生成`html`的模板
+
+2. `clean-webpack-plugin`：自动打包前先删除原有`dist`文件
+
+   ```js
+   //webpack.config.js
+   const path = require('path');
+   const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+   
+   module.exports = {
+     entry: 'index.js',
+     output: {
+       path: path.resolve(__dirname, './dist'),
+       filename: 'index_bundle.js'
+     },
+     plugins: [new CleanWebpackPlugin()]
+   };
+   ```
+
+   
+
+## [webpackDevServer](https://webpack.js.org/configuration/dev-server/)
+
+```js
+//package.json
+"scripts": {
+    "watch": "webpack --watch",
+    "start": "webpack-dev-server"
+}
+```
+
+```js
+//webpack.config.js
+module.exports = {
+    ...
+    devServer: {
+        contentBase: './dist',
+        open: true
+    }
+}
+```
+
+
+
